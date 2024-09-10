@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UWU Clicker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="clicker-container">
+            <p>Total Time Played: <span id="total-time">00:00:00</span> seconds</p>
+            
+            <div class="item">
+                <div class="pyramid-loader">
+                    <div class="wrapper">
+                      <span class="side side1"></span>
+                      <span class="side side2"></span>
+                      <span class="side side3"></span>
+                      <span class="side side4"></span>
+                      <span class="shadow"></span>
+                    </div>  
+                  </div>
+            </div>
+            <p>Lite Count: <span id="count">0</span></p>
+            <p>Click Multiplier: <span id="multiplier">1</span></p>
+            <div class="statistics">
+                <p>Clicks per Click: <span id="clicks-per-click">1</span></p>
+                <p>Auto-Clicks per Second: <span id="auto-clicks-per-second">0</span></p>
+            </div>
+            <button id="clicker" class="clicker">Click!</button>
+        </div>
+
+        <div class="upgrades">
+            <h2>Buy Upgrades:</h2>
+            <div class="buttons" id="upgrade-buttons"></div>
+        </div>
+        <nav>
+            <button id="reset" class="nav-button reset">
+                <div class="in-button">
+                    <span>Reset</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="20px" height="30px" viewBox="0 0 1920 1920">
+                        <path d="M960 0v213.333c411.627 0 746.667 334.934 746.667 746.667S1371.627 1706.667 960 1706.667 213.333 1371.733 213.333 960c0-197.013 78.4-382.507 213.334-520.747v254.08H640V106.667H53.333V320h191.04C88.64 494.08 0 720.96 0 960c0 529.28 430.613 960 960 960s960-430.72 960-960S1489.387 0 960 0" fill-rule="evenodd"/>
+                    </svg>
+                </div>
+            </button>
+            <button id="home" class="nav-button home active">
+                <div class="in-button">
+                    <span>Home</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23px" height="23px" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 10.5653C3 9.99094 3 9.70376 3.07403 9.4393C3.1396 9.20503 3.24737 8.98469 3.39203 8.7891C3.55534 8.5683 3.78202 8.39199 4.23539 8.03937L11.0177 2.76424C11.369 2.49099 11.5447 2.35436 11.7387 2.30184C11.9098 2.2555 12.0902 2.2555 12.2613 2.30184C12.4553 2.35436 12.631 2.49099 12.9823 2.76424L19.7646 8.03937C20.218 8.39199 20.4447 8.5683 20.608 8.7891C20.7526 8.98469 20.8604 9.20503 20.926 9.4393C21 9.70376 21 9.99094 21 10.5653V17.8002C21 18.9203 21 19.4804 20.782 19.9082C20.5903 20.2845 20.2843 20.5905 19.908 20.7822C19.4802 21.0002 18.9201 21.0002 17.8 21.0002H6.2C5.07989 21.0002 4.51984 21.0002 4.09202 20.7822C3.71569 20.5905 3.40973 20.2845 3.21799 19.9082C3 19.4804 3 18.9203 3 17.8002V10.5653Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </button>
+            <button id="upgrade" class="nav-button upgrade">
+                <div class="in-button">
+                    <span>Upgrade</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="30px" width="22px" version="1.1" id="XMLID_122_" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+                        <g id="upgrade">
+                            <g>
+                                <path d="M12,24C5.4,24,0,18.6,0,12S5.4,0,12,0s12,5.4,12,12S18.6,24,12,24z M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10s10-4.5,10-10    S17.5,2,12,2z M13,18h-2V9.4l-3.3,3.3l-1.4-1.4L12,5.6l5.7,5.7l-1.4,1.4L13,9.4V18z"/>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+            </button>
+            
+        </nav>
+    </div>
+    <div id="resetModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to reset progress?</p>
+            <button id="confirm-reset" class="modal-button">Yes</button>
+            <button id="cancel-reset" class="modal-button">No</button>
+        </div>
+    </div>
+    <script>
+        // Ініціалізація значень з кешу браузера або встановлення за замовчуванням
+let count = parseInt(localStorage.getItem('count')) || 0;
+let multiplier = parseInt(localStorage.getItem('multiplier')) || 1;
+let clicksPerClick = parseInt(localStorage.getItem('clicksPerClick')) || 1;
+let autoClicksPerSecond = parseInt(localStorage.getItem('autoClicksPerSecond')) || 0;
+let totalTime = parseInt(localStorage.getItem('totalTime')) || 0;
+let totalUpgradesPurchased = parseInt(localStorage.getItem('totalUpgradesPurchased')) || 0; // Зберігає загальну кількість прокачок
+let upgradeIndex = 1;
+
+// Оновлення елементів HTML на основі значень
+document.getElementById('count').textContent = count;
+document.getElementById('multiplier').textContent = multiplier;
+document.getElementById('clicks-per-click').textContent = clicksPerClick;
+document.getElementById('auto-clicks-per-second').textContent = autoClicksPerSecond;
+document.getElementById('total-time').textContent = formatTime(totalTime);
+
+// Функція форматування часу у формат 00:00:00
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600).toString().padStart(2, '0');
+    const minutes = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+    const secs = (seconds % 60).toString().padStart(2, '0');
+    return `${hours}:${minutes}:${secs}`;
+}
+
+// Таймер, який оновлює час кожну секунду
+setInterval(() => {
+    totalTime++;
+    document.getElementById('total-time').textContent = formatTime(totalTime);
+    localStorage.setItem('totalTime', totalTime);
+}, 1000);
+
+// Додавання обробника для кнопки Clicker
+document.getElementById('clicker').addEventListener('click', function() {
+    count += clicksPerClick * multiplier;
+    document.getElementById('count').textContent = count.toFixed(2);
+    localStorage.setItem('count', count);
+});
+
+// Додавання обробника для навігаційних кнопок
+document.querySelectorAll('.nav-button').forEach(button => {
+    button.addEventListener('click', function() {
+        // Видаляємо клас active з усіх навігаційних кнопок
+        document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+
+        // Додаємо клас active до натиснутої кнопки
+        this.classList.add('active');
+
+        // Додаємо клас active до елемента upgrades, якщо натиснута кнопка "Upgrade"
+        if (this.classList.contains('upgrade')) {
+            document.querySelector('.upgrades').classList.add('active');
+        } else {
+            document.querySelector('.upgrades').classList.remove('active');
+        }
+    });
+});
+
+// Генерація кнопок прокачки
+function generateUpgradeButtons() {
+    const upgradeButtonsContainer = document.getElementById('upgrade-buttons');
+
+    // Перевіряємо, чи кнопки вже були згенеровані
+    if (!localStorage.getItem('upgradesGenerated')) {
+        console.log('Generating new upgrade buttons...');
+        const upgrades = [
+            { name: 'Increase Clicks', basePrice: 100, priceMultiplier: 1.15, type: 'click', effect: 1, maxPurchases: 10 },
+            { name: 'Auto-Clicker', basePrice: 500, priceMultiplier: 1.2, type: 'auto', effect: 1, maxPurchases: 5 }
+        ];
+
+        upgrades.forEach(upgrade => {
+            createUpgradeButton(upgrade, upgradeButtonsContainer);
+        });
+
+        // Зберігаємо згенеровані прокачки в localStorage
+        localStorage.setItem('upgrades', JSON.stringify(upgrades));
+        localStorage.setItem('upgradesGenerated', true);
+    } else {
+        console.log('Loading upgrade buttons from local storage...');
+        // Завантаження прокачок з кешу
+        const upgrades = JSON.parse(localStorage.getItem('upgrades'));
+
+        // Додаємо перевірку, чи є масив
+        if (upgrades && Array.isArray(upgrades)) {
+            upgrades.forEach(upgrade => {
+                createUpgradeButton(upgrade, upgradeButtonsContainer);
+            });
+        } else {
+            console.log('No upgrades found in local storage.');
+            console.log('Generating new upgrade buttons...');
+            const upgrades = [
+                { name: 'Increase Clicks', basePrice: 100, priceMultiplier: 1.15, type: 'click', effect: 1, maxPurchases: 10 },
+                { name: 'Auto-Clicker', basePrice: 500, priceMultiplier: 1.2, type: 'auto', effect: 1, maxPurchases: 5 }
+            ];
+
+            upgrades.forEach(upgrade => {
+                createUpgradeButton(upgrade, upgradeButtonsContainer);
+            });
+
+            // Зберігаємо згенеровані прокачки в localStorage
+            localStorage.setItem('upgrades', JSON.stringify(upgrades));
+            localStorage.setItem('upgradesGenerated', true);
+        }
+    }
+}
+
+// Функція для створення кнопки прокачки з відображенням її властивостей
+function createUpgradeButton(upgrade, container) {
+    console.log('Creating button for:', upgrade);
+    const button = document.createElement('button');
+    button.className = 'upgrade-button';
+    button.dataset.basePrice = upgrade.basePrice;
+    button.dataset.priceMultiplier = upgrade.priceMultiplier;
+    button.dataset.type = upgrade.type;
+    button.dataset.effect = upgrade.effect;
+    button.dataset.maxPurchases = upgrade.maxPurchases;
+    button.dataset.purchases = upgrade.purchases || 0; // Якщо значення вже є в кеші, завантажуємо його
+    button.dataset.index = upgrade.index || upgradeIndex; // Додаємо порядковий номер
+
+    // Форматування тексту для відображення властивостей кнопки
+    button.innerHTML = generateButtonText(upgrade, button);
+
+    // Обробник події для покупки прокачки
+    button.addEventListener('click', function () {
+        let purchases = parseInt(this.dataset.purchases);
+        let currentPrice = Math.ceil(parseInt(this.dataset.basePrice) * Math.pow(this.dataset.priceMultiplier, purchases));
+        console.log('Current Price:', currentPrice);
+        if (count >= currentPrice && purchases < parseInt(this.dataset.maxPurchases)) {
+            // Віднімаємо ціну покупки від лічильника
+            count -= currentPrice;
+            document.getElementById('count').textContent = count.toFixed(2);
+            localStorage.setItem('count', count);
+
+            // Оновлюємо властивості апгрейду в залежності від типу
+            if (this.dataset.type === 'click') {
+                clicksPerClick += parseInt(this.dataset.effect);
+                document.getElementById('clicks-per-click').textContent = clicksPerClick;
+                localStorage.setItem('clicksPerClick', clicksPerClick);
+            } else if (this.dataset.type === 'auto') {
+                autoClicksPerSecond += parseInt(this.dataset.effect);
+                document.getElementById('auto-clicks-per-second').textContent = autoClicksPerSecond;
+                localStorage.setItem('autoClicksPerSecond', autoClicksPerSecond);
+            }
+
+            // Збільшуємо кількість покупок
+            purchases++;
+            this.dataset.purchases = purchases; // Оновлюємо значення у dataset кнопки
+            totalUpgradesPurchased++;
+            localStorage.setItem('totalUpgradesPurchased', totalUpgradesPurchased);
+
+            // Оновлюємо ціну після покупки
+            this.dataset.basePrice = Math.ceil(parseInt(this.dataset.basePrice) * this.dataset.priceMultiplier);
+
+            // Зберігаємо зміни у localStorage
+            const upgrades = JSON.parse(localStorage.getItem('upgrades'));
+            upgrades.forEach((u) => {
+                if (u.name === upgrade.name) {
+                    u.purchases = purchases; // Оновлюємо purchases
+                    u.basePrice = this.dataset.basePrice; // Оновлюємо нову ціну
+                }
+            });
+            localStorage.setItem('upgrades', JSON.stringify(upgrades));
+
+            // Оновлюємо текст кнопки після покупки
+            button.innerHTML = generateButtonText(upgrade, button);
+
+            // Якщо максимальна кількість покупок досягнута, робимо кнопку сірою і неактивною
+            if (purchases >= parseInt(this.dataset.maxPurchases)) {
+                button.disabled = true;
+                button.style.backgroundColor = 'gray';
+                generateNextUpgrade(upgrade, container); // Генеруємо нову прокачку
+            }
+        }
+    });
+
+    container.appendChild(button);
+    upgradeIndex++; // Збільшуємо порядковий номер для наступної прокачки
+}
+
+// Функція для генерації тексту кнопки з урахуванням властивостей і кількості покупок
+function generateButtonText(upgrade, button) {
+    const currentPrice = Math.ceil(parseInt(button.dataset.basePrice) * Math.pow(button.dataset.priceMultiplier, button.dataset.purchases));
+    return `
+        <strong>#${button.dataset.index} ${upgrade.name}</strong><br>
+        Price: ${currentPrice} Lites<br>
+        Multiplier: x${upgrade.priceMultiplier}<br>
+        Type: ${upgrade.type === 'click' ? 'Click Upgrade' : 'Auto-Clicker'}<br>
+        Effect: +${upgrade.effect} ${upgrade.type === 'click' ? 'Clicks per Click' : 'Auto-Clicks per Second'}<br>
+        Max Purchases: ${upgrade.maxPurchases}<br>
+        Purchased: ${button.dataset.purchases} times
+    `;
+}
+
+// Функція для генерації нової прокачки
+function generateNextUpgrade(previousUpgrade, container) {
+    const newUpgrade = {
+        name: `Advanced ${previousUpgrade.name}`,
+        basePrice: Math.ceil(previousUpgrade.basePrice * 2), // Удваиваем начальную цену
+        priceMultiplier: previousUpgrade.priceMultiplier * 1.1, // Увеличиваем множитель
+        type: previousUpgrade.type,
+        effect: Math.ceil(previousUpgrade.effect * 1.5), // Усиливаем эффект
+        maxPurchases: previousUpgrade.maxPurchases + 5, // Увеличиваем максимум покупок
+        purchases: 0,
+        index: upgradeIndex // Присваиваем новый порядковый номер
+    };
+
+    createUpgradeButton(newUpgrade, container); // Создаем новую кнопку прокачки
+    localStorage.setItem('upgradesGenerated', true);
+    const upgrades = JSON.parse(localStorage.getItem('upgrades')) || [];
+    upgrades.push(newUpgrade);
+    localStorage.setItem('upgrades', JSON.stringify(upgrades));
+}
+
+
+// Функція для автокліку
+function startAutoClicker() {
+    setInterval(() => {
+        if (autoClicksPerSecond > 0) {
+            count += autoClicksPerSecond;
+            document.getElementById('count').textContent = count;
+            localStorage.setItem('count', count);
+        }
+    }, 1000);
+}
+
+// Запускаємо автоклік
+startAutoClicker();
+
+generateUpgradeButtons();
+
+// Додайте обробник події для кнопки "Reset"
+document.getElementById('reset').addEventListener('click', function() {
+    // Відкрити модальне вікно
+    document.getElementById('resetModal').style.display = 'block';
+});
+
+// Обробник події для кнопки "Yes" у модальному вікні
+document.getElementById('confirm-reset').addEventListener('click', function() {
+    // Зберігаємо дані в тимчасові змінні
+    let savedMultiplier = multiplier + parseFloat((totalUpgradesPurchased / 10).toFixed(2));
+    let savedClicksPerClick = 1;
+    let savedAutoClicksPerSecond = 0;
+    let savedTotalTime = totalTime;
+
+    // Очищаємо localStorage
+    //localStorage.clear();
+
+    // Скидаємо значення змінних
+    multiplier = savedMultiplier;
+    clicksPerClick = savedClicksPerClick;
+    autoClicksPerSecond = savedAutoClicksPerSecond;
+    count = 0;
+    totalUpgradesPurchased = 0;
+    upgradeIndex = 1;
+
+    // Оновлення елементів HTML на основі нових значень
+    document.getElementById('count').textContent = count;
+    document.getElementById('multiplier').textContent = multiplier;
+    document.getElementById('clicks-per-click').textContent = clicksPerClick;
+    document.getElementById('auto-clicks-per-second').textContent = autoClicksPerSecond;
+    document.getElementById('total-time').textContent = formatTime(savedTotalTime);
+
+
+    // Очищаємо дані про прокачки
+    localStorage.removeItem('upgradesGenerated');
+    localStorage.removeItem('upgrades');
+
+    // Видаляємо кнопки прокачок з DOM
+    const upgradeButtonsContainer = document.getElementById('upgrade-buttons');
+    while (upgradeButtonsContainer.firstChild) {
+        upgradeButtonsContainer.removeChild(upgradeButtonsContainer.firstChild);
+    }
+
+    // Зберігаємо нові значення в localStorage
+    localStorage.setItem('multiplier', multiplier);
+    localStorage.setItem('clicksPerClick', clicksPerClick);
+    localStorage.setItem('autoClicksPerSecond', autoClicksPerSecond);
+    localStorage.setItem('count', count);
+    localStorage.setItem('totalUpgradesPurchased', totalUpgradesPurchased);
+    localStorage.setItem('totalTime', savedTotalTime);
+    localStorage.setItem('upgradeIndex', upgradeIndex);
+    generateUpgradeButtons();
+    // Закрити модальне вікно
+    document.getElementById('resetModal').style.display = 'none';
+});
+
+// Обробник події для кнопки "No" у модальному вікні
+document.getElementById('cancel-reset').addEventListener('click', function() {
+    // Закрити модальне вікно
+    document.getElementById('resetModal').style.display = 'none';
+});
+
+// Очищення кешу браузера
+document.getElementById('clear-cache').addEventListener('click', function() {
+    localStorage.clear(); // Очищення всього кешу
+    // Скидання значень після очищення кешу
+    count = 0;
+    multiplier = 1;
+    clicksPerClick = 1;
+    autoClicksPerSecond = 0;
+    totalTime = 0;
+    totalUpgradesPurchased = 0;
+
+    // Оновлення елементів HTML
+    document.getElementById('count').textContent = count;
+    document.getElementById('multiplier').textContent = multiplier;
+    document.getElementById('clicks-per-click').textContent = clicksPerClick;
+    document.getElementById('auto-clicks-per-second').textContent = autoClicksPerSecond;
+    document.getElementById('total-time').textContent = formatTime(totalTime);
+
+    alert('Cache has been cleared!');
+});
+
+    </script>
+</body>
+</html>

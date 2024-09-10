@@ -1,0 +1,36 @@
+@font-face {
+	font-family: 'Feature Mono';
+	src: url('FeatureMono-Hairline.woff2') format('woff2') url('FeatureMono-Hairline.woff') format('woff');
+	font-weight: 100;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Feature Mono';
+	src: url('FeatureMono-Thin.woff2') format('woff2') url('FeatureMono-Thin.woff') format('woff');
+	font-weight: 200;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Feature Mono';
+	src: url('FeatureMono-Light.woff2') format('woff2') url('FeatureMono-Light.woff') format('woff');
+	font-weight: 300;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Feature Mono';
+	src: url('FeatureMono-Regular.woff2') format('woff2') url('FeatureMono-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Feature Mono';
+	src: url('FeatureMono-Medium.woff2') format('woff2') url('FeatureMono-Medium.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Feature Mono';
+	src: url('FeatureMono-Bold.woff2') format('woff2') url('FeatureMono-Bold.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
+}
