@@ -63,6 +63,13 @@ body {
     animation: pulse 2s infinite;
     overflow: hidden;
 }
+@media (max-width: 768px) {
+    .container{
+        width: 100vw;
+        height: 100vh;
+    }
+    
+}
 .characteristic{
     display: flex;
 
