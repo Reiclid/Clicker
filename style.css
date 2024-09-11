@@ -65,6 +65,9 @@ body {
 }
 @media (max-width: 768px) {
     .container{
+        box-sizing: border-box;
+        border: transparent;
+        border-radius: 0px;
         width: 100vw;
         height: 100vh;
     }
@@ -376,3 +379,21 @@ nav > :last-child{
     transform: rotateX(90deg) translateZ(-40px);
     filter: blur(12px);
   }
+
+  /* Анімація для масштабування піраміди */
+@keyframes grow {
+    0% {
+        transform: scale(1) rotateX(-20deg);
+    }
+    50% {
+        transform: scale(1.2) rotateX(-20deg); /* Максимальне збільшення */
+    }
+    100% {
+        transform: scale(1) rotateX(-20deg); /* Повернення до початкового розміру */
+    }
+}
+
+/* Додаємо клас grow для анімації */
+.pyramid-loader.grow {
+    animation: grow 0.3s ease-in-out; /* Тривалість анімації 0.5 секунди */
+}

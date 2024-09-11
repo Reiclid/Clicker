@@ -9,6 +9,7 @@
 <body>
     <div class="container">
         <div class="clicker-container">
+            <p>Beta: 0.1</p>
             <p>Total Time Played: <span id="total-time">00:00:00</span> seconds</p>
             
             <div class="item">
@@ -75,6 +76,24 @@
         </div>
     </div>
     <script>
+
+// Отримуємо елемент піраміди
+const pyramidLoader = document.querySelector('.pyramid-loader');
+
+// Отримуємо кнопку Clicker
+const clickerButton = document.querySelector('.clicker');
+
+// Додаємо обробник подій для кнопки Clicker
+clickerButton.addEventListener('click', function() {
+    // Додаємо клас для анімації
+    pyramidLoader.classList.add('grow');
+
+    // Видаляємо клас після завершення анімації
+    setTimeout(function() {
+        pyramidLoader.classList.remove('grow');
+    }, 300); // Час має відповідати тривалості анімації в CSS (0.5 секунди)
+});
+
         // Ініціалізація значень з кешу браузера або встановлення за замовчуванням
 let count = parseInt(localStorage.getItem('count')) || 0;
 let multiplier = parseInt(localStorage.getItem('multiplier')) || 1;
