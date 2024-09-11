@@ -63,19 +63,7 @@ body {
     animation: pulse 2s infinite;
     overflow: hidden;
 }
-@media (max-width: 768px) {
-    .container{
-        box-sizing: border-box;
-        border: transparent;
-        border-radius: 0px;
-        width: 100vw;
-        height: 100vh;
-    }
-    .nav-button{
-        width: 30%;
-    }
-    
-}
+
 .characteristic{
     display: flex;
 
@@ -396,4 +384,18 @@ nav > :last-child{
 /* Додаємо клас grow для анімації */
 .pyramid-loader.grow {
     animation: grow 0.3s ease-in-out; /* Тривалість анімації 0.5 секунди */
+}
+
+@media (max-width: 768px) {
+    .container{
+        box-sizing: border-box;
+        border: transparent;
+        border-radius: 0px;
+        width: 100vw;
+        height: 100vh;
+    }
+    .nav-button{
+        width: 27%;
+    }
+    
 }
